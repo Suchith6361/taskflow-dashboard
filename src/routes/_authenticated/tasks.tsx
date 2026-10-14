@@ -106,7 +106,7 @@ function Tasks() {
                   <TableCell className="hidden text-sm text-muted-foreground md:table-cell">{projectName[t.projectId] ?? "—"}</TableCell>
                   <TableCell>
                     <Select value={t.status} onValueChange={(v) => updateStatus.mutate({ id: t.id, data: { status: v as TaskStatus } })}>
-                      <SelectTrigger size="sm" className="h-7 w-auto border-none bg-transparent px-0 shadow-none focus-visible:ring-0" aria-label="Change status">
+                      <SelectTrigger className="h-7 w-auto border-none bg-transparent px-0 shadow-none focus-visible:ring-0" aria-label="Change status">
                         <StatusBadge status={t.status} />
                       </SelectTrigger>
                       <SelectContent>
@@ -126,7 +126,7 @@ function Tasks() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => { setEditing(t); setOpen(true); }}><Pencil /> Edit</DropdownMenuItem>
-                        <DropdownMenuItem variant="destructive" onClick={() => setToDelete(t)}><Trash2 /> Delete</DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => setToDelete(t)}><Trash2 /> Delete</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

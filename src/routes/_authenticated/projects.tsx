@@ -59,7 +59,7 @@ function Projects() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => { setEditing(p); setDialogOpen(true); }}><Pencil /> Edit</DropdownMenuItem>
-                      <DropdownMenuItem variant="destructive" onClick={() => setToDelete(p)}><Trash2 /> Delete</DropdownMenuItem>
+                      <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => setToDelete(p)}><Trash2 /> Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
