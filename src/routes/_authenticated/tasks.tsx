@@ -14,7 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useDeleteTask, useProjects, useTasks, useUpdateTask } from "@/hooks/use-data";
 import { isOverdue } from "@/services/taskService";
-import { PRIORITY_LABELS, STATUS_LABELS, type Task, type TaskFilters, type TaskPriority, type TaskStatus } from "@/types";
+import { PRIORITY_LABELS, STATUS_LABELS, type Task, type TaskPriority, type TaskStatus } from "@/types";
 
 export const Route = createFileRoute("/_authenticated/tasks")({
   head: () => ({
@@ -30,8 +30,8 @@ export const Route = createFileRoute("/_authenticated/tasks")({
 
 function Tasks() {
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<TaskFilters["status"]>("all");
-  const [priority, setPriority] = useState<TaskFilters["priority"]>("all");
+  const [status, setStatus] = useState<TaskStatus | "all">("all");
+  const [priority, setPriority] = useState<TaskPriority | "all">("all");
   const filters = { search, status, priority };
   const { data: tasks, isLoading, isError, error, refetch } = useTasks(filters);
   const { data: projects = [] } = useProjects();
@@ -59,14 +59,14 @@ function Tasks() {
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by title…" className="bg-card pl-9" />
         </div>
-        <Select value={status} onValueChange={(v) => setStatus(v as TaskFilters["status"])}>
+        <Select value={status} onValueChange={(v) => setStatus(v as TaskStatus | "all")}>
           <SelectTrigger className="bg-card sm:w-40"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All statuses</SelectItem>
             {Object.entries(STATUS_LABELS).map(([k, l]) => <SelectItem key={k} value={k}>{l}</SelectItem>)}
           </SelectContent>
         </Select>
-        <Select value={priority} onValueChange={(v) => setPriority(v as TaskFilters["priority"])}>
+        <Select value={priority} onValueChange={(v) => setPriority(v as TaskPriority | "all")}>
           <SelectTrigger className="bg-card sm:w-40"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All priorities</SelectItem>
