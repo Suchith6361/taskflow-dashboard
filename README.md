@@ -1,68 +1,303 @@
-# TaskFlow Dashboard
+\# TaskFlow â€” Project Management Application
 
-Build a professional project management web application called TaskFlow using React, TypeScript, Tailwind CSS, and shadcn/ui.
 
-Design
 
-Create a polished, modern SaaS dashboard inspired by Linear and modern project management tools. Use a dark navy sidebar, light workspace background, white cards, subtle borders, rounded corners, clean typography, and blue primary buttons. Make it responsive.
+TaskFlow is a full-stack project management application for organizing projects and tasks, tracking progress, and viewing dashboard statistics.
 
-Pages
 
-Dashboard: total projects, total tasks, completed tasks, overdue tasks, recent projects, and task status overview.
 
-Projects: project cards with name, description, creation date, task counts, and progress. Include create, edit, delete dialogs.
+\## Technology Stack
 
-Tasks: task table with title, description, project, status, priority, and due date. Include create, edit, delete, and status updates.
 
-Login and Register: clean authentication forms with validation.
 
-Functionality
+\*\*Frontend\*\*
 
-Task statuses: To Do, In Progress, Done.
+\- Next.js App Router, React, TypeScript
 
-Priorities: Low, Medium, High.
+\- Tailwind CSS and existing reusable UI components
 
-Search tasks by title.
+\- React Query for server state and cache management
 
-Combine status and priority filters.
 
-Show useful loading, error, and empty states.
 
-Update dashboard statistics when tasks change.
+\*\*Backend\*\*
 
-Add confirmation before destructive actions.
+\- Node.js and Express
 
-Use reusable React components and TypeScript types.
+\- REST API with JWT authentication
 
-Organize the code into pages, components, types, and services.
+\- bcrypt password hashing and request validation
 
-Use mock data only for this initial UI prototype.
 
-Keep data access behind a service layer so we can later connect a separate Node.js + Express REST API and MySQL database.
 
-Do not use Supabase, Firebase, or any managed backend.
+\*\*Database\*\*
 
-Do not claim authentication is secure until a real backend is implemented.
+\- MySQL 8
 
-Generate a complete, functional frontend prototype with a consistent design across all pages.
+\- Versioned SQL migrations
 
-This project was built with [Lovable](https://lovable.dev).
 
-## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/bfdf5ab4-0c81-4dfd-947c-14d2ea5154cf).
+\## Features
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
-## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+\- User registration and login
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+\- Authenticated, user-scoped project management
+
+\- Create, view, update, and delete projects
+
+\- Create, view, update, and delete tasks
+
+\- Task statuses: To Do, In Progress, Done
+
+\- Task priorities: Low, Medium, High
+
+\- Search tasks by title and filter by status and priority
+
+\- Dashboard statistics and project progress
+
+\- Loading, error, and empty states
+
+
+
+\## Project Structure
+
+
+
+```text
+
+Task Flow/
+
+â”œâ”€â”€ Frontend/     # Next.js application and existing UI
+
+â”œâ”€â”€ Backend/      # Express API, migrations, and tests
+
+â””â”€â”€ README.md     # Project setup and documentation
+
 ```
+
+
+
+\## Prerequisites
+
+
+
+\- Node.js and npm
+
+\- MySQL 8
+
+\- Git
+
+
+
+\## Setup
+
+
+
+\### 1. Configure the database
+
+
+
+Create a MySQL database named `taskflow` and a dedicated application user with appropriate privileges.
+
+
+
+Run the backend migrations to create the required tables:
+
+
+
+```powershell
+
+cd Backend
+
+npm install
+
+```
+
+
+
+Copy `.env.example` to `.env` and configure the database connection and a cryptographically random JWT secret of at least 32 characters. Never commit `.env`.
+
+
+
+Run the migration:
+
+
+
+```powershell
+
+npm run migrate
+
+```
+
+
+
+Start the API:
+
+
+
+```powershell
+
+npm start
+
+```
+
+
+
+The API runs on port `5000` by default.
+
+
+
+\### 2. Configure the frontend
+
+
+
+In a separate terminal:
+
+
+
+```powershell
+
+cd Frontend
+
+npm install
+
+```
+
+
+
+Copy `.env.example` to `.env.local` if needed. Configure the public API base URL:
+
+
+
+```text
+
+NEXT\_PUBLIC\_API\_BASE\_URL=http://localhost:5000/api
+
+```
+
+
+
+Start the Next.js development server:
+
+
+
+```powershell
+
+npm run next:dev
+
+```
+
+
+
+Open `http://localhost:3000`.
+
+
+
+\## Testing
+
+
+
+Run frontend tests:
+
+
+
+```powershell
+
+cd Frontend
+
+npm test
+
+```
+
+
+
+Run the production build:
+
+
+
+```powershell
+
+npm run next:build
+
+```
+
+
+
+Run backend tests:
+
+
+
+```powershell
+
+cd Backend
+
+npm test
+
+```
+
+
+
+Database integration tests require a separately configured test database. Follow the backend documentation before running them.
+
+
+
+\## API Overview
+
+
+
+The API is mounted under `/api`.
+
+
+
+| Feature | Endpoint |
+
+|---|---|
+
+| Register | `POST /auth/register` |
+
+| Login | `POST /auth/login` |
+
+| Current user | `GET /auth/me` |
+
+| List/create projects | `GET /projects`, `POST /projects` |
+
+| Read/update/delete project | `/projects/:id` |
+
+| List/create tasks | `GET /tasks`, `POST /tasks` |
+
+| Read/update/delete task | `/tasks/:id` |
+
+| Update task status | `PATCH /tasks/:id/status` |
+
+| Dashboard statistics | `GET /dashboard/stats` |
+
+| Health check | `GET /health` |
+
+
+
+Protected endpoints require a bearer access token. See `Backend/README.md` for detailed API contracts, configuration, and database instructions.
+
+
+
+\## Security Notes
+
+
+
+\- Database credentials and JWT secrets belong only in local environment files.
+
+\- Backend authorization must enforce ownership of projects and tasks.
+
+\- Browser token storage currently uses `localStorage`; an XSS vulnerability could expose a token until expiry.
+
+\- Logout clears the local session but does not revoke an already-issued stateless JWT.
+
+
+
+\## Architecture
+
+
+
+The Next.js frontend calls the Express REST API. The backend validates requests, authenticates users, enforces resource ownership, and accesses MySQL through the backend data layer. Database schema changes are managed through versioned migrations.
